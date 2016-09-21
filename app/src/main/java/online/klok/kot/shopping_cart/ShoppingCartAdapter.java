@@ -57,8 +57,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     public void onBindViewHolder(final ShoppingCartViewHolder holder, int position) {
 
         holder.tvItemName.setText(itemList.get(position).getName());
-        holder.tvItemPrice.setText("Price :" + itemList.get(position).getPrice());
+        holder.tvItemPrice.setText("Price : " + itemList.get(position).getPrice());
         holder.tvItemQty.setText("" + itemList.get(position).getQty());
+        holder.tvQtyPrice.setText("₹" + itemList.get(position).getPrice() * itemList.get(position).getQty());
 
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,10 +95,16 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
 
+    public interface OnShoppingCartItemClicked {
+        void onShoppingItemQtyChanged();
+    }
+
+    // interface for call back to count and add total
+
     public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvItemName, tvItemPrice, tvItemQty;
+        TextView tvItemName, tvItemPrice, tvItemQty, tvQtyPrice;
         Button btnAdd, btnLess;
 
         public ShoppingCartViewHolder(View itemView) {
@@ -105,16 +112,10 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             tvItemName = (TextView) itemView.findViewById(R.id.tv_name_of_item);
             tvItemPrice = (TextView) itemView.findViewById(R.id.tv_item_price);
             btnAdd = (Button) itemView.findViewById(R.id.btn_add);
-            // TODO set qty details to this TextView
             tvItemQty = (TextView) itemView.findViewById(R.id.tv_item_qty);
             btnLess = (Button) itemView.findViewById(R.id.btn_Less);
+            tvQtyPrice = (TextView) itemView.findViewById(R.id.tv_item_qty_price);
 
         }
-    }
-
-    // interface for call back to count and add total
-
-    public interface OnShoppingCartItemClicked {
-        void onShoppingItemQtyChanged();
     }
 }

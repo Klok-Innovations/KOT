@@ -7,7 +7,7 @@ public class ShoppingCartPOJO {
     public static final String LOG_TAG = "ShoppingCartPOJO";
 
 
-    String name;
+    String name, kitchenNote, type;
     double price;
     int qty;
 
@@ -17,6 +17,22 @@ public class ShoppingCartPOJO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getKitchenNote() {
+        return kitchenNote;
+    }
+
+    public void setKitchenNote(String kitchenNote) {
+        this.kitchenNote = kitchenNote;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public double getPrice() {

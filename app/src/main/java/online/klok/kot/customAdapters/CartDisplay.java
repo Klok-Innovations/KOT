@@ -1,4 +1,5 @@
 package online.klok.kot.customAdapters;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import online.klok.kot.R;
 
 
@@ -61,12 +63,6 @@ public class CartDisplay extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem show_cart = menu.findItem(R.id.action_show_cart);
-        show_cart.setVisible(false);
-        return true;
     }
 
     @Override
