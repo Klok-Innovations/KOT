@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import online.klok.kot.AppKOT;
+import online.klok.kot.NewOrderPOJO;
 import online.klok.kot.R;
 import online.klok.kot.orders.OrdersActivity;
+import online.klok.kot.orders.OrdersPOJO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +35,7 @@ public class CartFragment extends Fragment implements ShoppingCartAdapter.OnShop
     private static final String LOG_TAG = CartFragment.class.getSimpleName();
 
     private RecyclerView rvShoppingCart;
-    private TextView tvTotalItems, tvTotalPrice, tvTotalCartAmt;
+    private TextView tvTotalItems, tvTotalPrice, tvTotalCartAmt, tvType, tvNoCartItems;
     private int currentCartCount;
     private double currentTotalPrice;
     private EditText etKitchenNote;
@@ -40,7 +44,7 @@ public class CartFragment extends Fragment implements ShoppingCartAdapter.OnShop
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -50,11 +54,57 @@ public class CartFragment extends Fragment implements ShoppingCartAdapter.OnShop
         tvTotalPrice = (TextView) view.findViewById(R.id.tv_total_price);
         tvTotalCartAmt = (TextView) view.findViewById(R.id.tv_total_cart_amt);
 
+        btnSendToKitchen = (Button) view.findViewById(R.id.btnSendToKitchen);
+
         rvShoppingCart = (RecyclerView) view.findViewById(R.id.rv_shopping_cart);
         etKitchenNote = (EditText) view.findViewById(R.id.etKitchenNote);
 
+        tvType = (TextView) view.findViewById(R.id.tvType);
         btnType = (Button) view.findViewById(R.id.btn_type);
-        btnSendToKitchen = (Button) view.findViewById(R.id.btnSendToKitchen);
+
+        tvNoCartItems = (TextView) view.findViewById(R.id.tvNoCartItems);
+
+        // Make the Views Disappear When there is no item in Cart
+        tvTotalCartAmt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (currentCartCount == 0) {
+
+                    btnSendToKitchen.setVisibility(View.GONE);
+                    etKitchenNote.setVisibility(View.GONE);
+                    btnType.setVisibility(View.GONE);
+                    tvType.setVisibility(View.GONE);
+                    rvShoppingCart.setVisibility(View.GONE);
+                    tvTotalCartAmt.setVisibility(View.GONE);
+                    tvNoCartItems.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    btnSendToKitchen.setVisibility(View.VISIBLE);
+                    etKitchenNote.setVisibility(View.VISIBLE);
+                    btnType.setVisibility(View.VISIBLE);
+                    tvType.setVisibility(View.VISIBLE);
+                    rvShoppingCart.setVisibility(View.VISIBLE);
+                    tvTotalCartAmt.setVisibility(View.VISIBLE);
+                    tvNoCartItems.setVisibility(View.GONE);
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+            }
+        });
+
 
         // Setting Views
         tvTotalItems.setText("Total Item : " + currentCartCount);
@@ -88,9 +138,20 @@ public class CartFragment extends Fragment implements ShoppingCartAdapter.OnShop
             @Override
             public void onClick(View view) {
 
+                ArrayList<ShoppingCartPOJO> onStartKot = AppKOT.onStartKot;
+
                 ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
                 shoppingCartPOJO.setType(btnType.getText().toString());
                 shoppingCartPOJO.setKitchenNote(etKitchenNote.getText().toString());
+                shoppingCartPOJO.setKotId(shoppingCartPOJO.count);
+
+                onStartKot.add(shoppingCartPOJO);
+
+                Log.e(LOG_TAG, "KotID :" + shoppingCartPOJO.getKotId());
+
+                AppKOT.onStartKot = onStartKot;
+
+
 
                 Intent intent = new Intent(getActivity(), OrdersActivity.class);
                 startActivity(intent);

@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -39,7 +42,7 @@ import online.klok.kot.models.ItemModel;
 public class ItemFragment extends Fragment implements ShoppingItemAdapter.OnShoppingCartItemClicked {
 
     private static final String LOG_TAG = ItemFragment.class.getSimpleName();
-
+    public EditText etSearch;
     private RecyclerView rvShoppingCart;
     private TextView tvTotalItems, tvTotalPrice;
     private int currentCartCount;
@@ -66,6 +69,7 @@ public class ItemFragment extends Fragment implements ShoppingItemAdapter.OnShop
         tvTotalItems = (TextView) view.findViewById(R.id.tv_total_items);
         tvTotalPrice = (TextView) view.findViewById(R.id.tv_total_price);
 
+        etSearch = (EditText) view.findViewById(R.id.et_search);
 
         tvTotalItems.setText("Total Item : " + currentCartCount);
         tvTotalPrice.setText("Total Price : " + currentTotalPrice);
@@ -74,9 +78,76 @@ public class ItemFragment extends Fragment implements ShoppingItemAdapter.OnShop
         rvShoppingCart.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rvShoppingCart.setAdapter(new ShoppingItemAdapter(this, getShoppingCartItems()));
 
+        addTextListener();
+
         return view;
     }
 
+    private ArrayList<ShoppingCartPOJO> getShoppingCartItems() {
+        ArrayList<ShoppingCartPOJO> itemList = new ArrayList<>();
+
+        for (int i = 0; i < itemModelList.size(); i++) {
+            ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
+            shoppingCartPOJO.setName("" + itemModelList.get(i).getItemName());
+            shoppingCartPOJO.setPrice(Double.parseDouble(itemModelList.get(i).getSalesRate()));
+            itemList.add(shoppingCartPOJO);
+        }
+
+        Log.e(LOG_TAG, "Total items size :" + itemList.size());
+
+        return itemList;
+    }
+
+    public void addTextListener() {
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                charSequence = charSequence.toString().toLowerCase();
+
+                ArrayList<ShoppingCartPOJO> filteredList = new ArrayList<>();
+
+                for (int j = 0; j < itemModelList.size(); j++) {
+                    final String text = itemModelList.get(j).getItemName().toLowerCase();
+
+                    if (text.contains(charSequence)) {
+                        ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
+                        shoppingCartPOJO.setName("" + itemModelList.get(j).getItemName());
+                        shoppingCartPOJO.setPrice(Double.parseDouble(itemModelList.get(j).getSalesRate()));
+                        filteredList.add(shoppingCartPOJO);
+                    }
+                }
+
+                rvShoppingCart.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                adapter = new ShoppingItemAdapter(ItemFragment.this, filteredList);
+                rvShoppingCart.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+            }
+
+        });
+    }
+
+    @Override
+    public void onShoppingCartAddClicked(double price) {
+
+        currentCartCount = currentCartCount + 1;
+        currentTotalPrice = currentTotalPrice + price;
+
+        tvTotalItems.setText("Total Item : " + currentCartCount);
+        tvTotalPrice.setText("Total Price : " + currentTotalPrice);
+
+        AppKOT.cartItemSelected = adapter.getSelectedItems();
+
+    }
 
     public class JSONTask extends AsyncTask<String, String, List<ItemModel>> {
 
@@ -154,34 +225,6 @@ public class ItemFragment extends Fragment implements ShoppingItemAdapter.OnShop
             adapter = new ShoppingItemAdapter(ItemFragment.this, getShoppingCartItems());
             rvShoppingCart.setAdapter(adapter);
         }
-    }
-
-    private ArrayList<ShoppingCartPOJO> getShoppingCartItems() {
-        ArrayList<ShoppingCartPOJO> itemList = new ArrayList<>();
-
-        for (int i = 0; i < itemModelList.size(); i++) {
-            ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
-            shoppingCartPOJO.setName("" + itemModelList.get(i).getItemName());
-            shoppingCartPOJO.setPrice(Double.parseDouble(itemModelList.get(i).getSalesRate()));
-            itemList.add(shoppingCartPOJO);
-        }
-
-        Log.e(LOG_TAG, "Total items size :" + itemList.size());
-
-        return itemList;
-    }
-
-    @Override
-    public void onShoppingCartAddClicked(double price) {
-
-        currentCartCount = currentCartCount + 1;
-        currentTotalPrice = currentTotalPrice + price;
-
-        tvTotalItems.setText("Total Item : " + currentCartCount);
-        tvTotalPrice.setText("Total Price : " + currentTotalPrice);
-
-        AppKOT.cartItemSelected = adapter.getSelectedItems();
-
     }
 
 }

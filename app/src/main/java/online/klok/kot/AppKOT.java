@@ -13,6 +13,8 @@ public class AppKOT extends Application {
     public static final String LOG_TAG = "AppKOT";
 
     public static ArrayList<ShoppingCartPOJO> cartItemSelected = new ArrayList<>();
+    public static ArrayList<NewOrderPOJO> newOrderList = new ArrayList<>();
+    public static ArrayList<ShoppingCartPOJO> onStartKot = new ArrayList<>();
 
     @Override
     public void onCreate() {

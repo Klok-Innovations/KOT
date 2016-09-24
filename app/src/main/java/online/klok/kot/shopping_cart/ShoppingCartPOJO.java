@@ -11,6 +11,21 @@ public class ShoppingCartPOJO {
     double price;
     int qty;
 
+    public static int kotId = 1;
+    public final int count;
+
+    ShoppingCartPOJO() {
+        count = kotId;
+    }
+
+    public void setKotId(int count) {
+        kotId = count;
+    }
+
+    public int getKotId() {
+        return count;
+    }
+
     public String getName() {
         return name;
     }

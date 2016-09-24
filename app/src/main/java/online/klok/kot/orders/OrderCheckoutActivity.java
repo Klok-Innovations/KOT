@@ -84,7 +84,6 @@ public class OrderCheckoutActivity extends AppCompatActivity implements OrderChe
         for (int i = 0; i < 5; i++) {
             OrdersPOJO ordersPOJO = new OrdersPOJO();
             ordersPOJO.setName("Item " + (i + 1));
-            ordersPOJO.setOrderNo(i + 1);
             itemList.add(ordersPOJO);
         }
 

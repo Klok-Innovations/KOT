@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import online.klok.kot.AppKOT;
 import online.klok.kot.R;
+import online.klok.kot.floors_tables.FloorsActivity;
 import online.klok.kot.shopping_cart.CartActivity;
 
 
@@ -53,26 +55,46 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.O
         rvOrders.setAdapter(new OrdersAdapter(this, getOrdersItems()));
     }
 
-    private ArrayList<OrdersPOJO> getOrdersItems() {
-        ArrayList<OrdersPOJO> itemList = new ArrayList<>();
+    private ArrayList<ArrayList<OrdersPOJO>> getOrdersItems() {
 
-        for (int i = 0; i < 5; i++) {
+        ArrayList<OrdersPOJO> itemList = new ArrayList<>();
+        ArrayList<OrdersPOJO> onStartKotList = new ArrayList<>();
+        // Create an ArrayList inside an ArrayList
+        ArrayList<ArrayList<OrdersPOJO>> result = new ArrayList<>();
+
+
+        for (int i = 0; i < AppKOT.newOrderList.size(); i++) {
             OrdersPOJO ordersPOJO = new OrdersPOJO();
-            ordersPOJO.setName("Item " + (i + 1));
-            ordersPOJO.setOrderNo(i + 1);
+            ordersPOJO.setCovers(AppKOT.newOrderList.get(i).getCovers());
+            ordersPOJO.setTableName(AppKOT.newOrderList.get(i).getTableName());
+            ordersPOJO.setOrderNo(AppKOT.newOrderList.get(i).getOrderNo());
             itemList.add(ordersPOJO);
         }
 
-        Log.e(LOG_TAG, "Total items size :" + itemList.size());
+        for (int j = 0; j < AppKOT.onStartKot.size(); j++) {
+            OrdersPOJO ordersPOJO = new OrdersPOJO();
+            ordersPOJO.setKotId(AppKOT.onStartKot.get(j).getKotId());
+            Log.e(LOG_TAG, "AppKOT:KotId :" + AppKOT.onStartKot.get(j).getKotId());
+            onStartKotList.add(ordersPOJO);
+            Log.e(LOG_TAG, "result:KotId :" + onStartKotList.get(j).getKotId());
 
-        return itemList;
+        }
+
+        Log.e(LOG_TAG, "Total itemList size :" + itemList.size());
+        Log.e(LOG_TAG, "Total onStartKotList size :" + onStartKotList.size());
+
+
+        result.add(itemList); // retrieve this by result.get(0).get(position)
+        result.add(onStartKotList); // retrieve this by result.get(1).get(position)
+
+        return result;
     }
 
     private void newOrder() {
         Toast.makeText(this, "Perform  newOrder", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, CartActivity.class);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, FloorsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

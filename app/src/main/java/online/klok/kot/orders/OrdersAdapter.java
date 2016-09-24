@@ -19,10 +19,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
     private final OnOrdersItemClicked callBack;
 
-    private ArrayList<OrdersPOJO> itemList = new ArrayList<>();
+//    private ArrayList<OrdersPOJO> itemList = new ArrayList<>();
+//
+//    private ArrayList<OrdersPOJO> onStartKotList = new ArrayList<>();
 
-    public OrdersAdapter(OnOrdersItemClicked callBack, ArrayList<OrdersPOJO> itemList) {
-        this.itemList = itemList;
+    private ArrayList<ArrayList<OrdersPOJO>> result = new ArrayList<>();
+
+    public OrdersAdapter(OnOrdersItemClicked callBack, ArrayList<ArrayList<OrdersPOJO>> result) {
+        this.result = result;
         this.callBack = callBack;
     }
 
@@ -35,9 +39,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     @Override
     public void onBindViewHolder(final OrdersViewHolder holder, int position) {
 
-        holder.tvTable.setText("T2");
-        holder.tvOrderNo.setText("Order #" + itemList.get(position).getOrderNo());
-//        holder.tvItemPrice.setText("Price :" + itemList.get(position).getPrice());
+        holder.tvTable.setText(result.get(0).get(position).getTableName());
+        holder.tvOrderNo.setText("Order #" + result.get(0).get(position).getOrderNo());
+        holder.tvCovers.setText("" + result.get(0).get(position).getCovers());
+        holder.tvKot.setText("" + result.get(1).get(position).getKotId());
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +63,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return result.get(0).size(); // Same as itemList.size();
     }
 
 
@@ -71,7 +76,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public class OrdersViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tvTable, tvOrderNo;
+        TextView tvTable, tvOrderNo, tvCovers, tvKot;
         Button btnNext, btnEdit;
 
         public OrdersViewHolder(View itemView) {
@@ -80,6 +85,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             tvOrderNo = (TextView) itemView.findViewById(R.id.tv_order_no);
             btnEdit = (Button) itemView.findViewById(R.id.btn_edit);
             btnNext = (Button) itemView.findViewById(R.id.btn_next);
+            tvCovers = (TextView) itemView.findViewById(R.id.tv_covers);
+            tvKot = (TextView) itemView.findViewById(R.id.tv_kot);
 
 
         }
