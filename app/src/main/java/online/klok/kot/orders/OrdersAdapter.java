@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import online.klok.kot.AppKOT;
 import online.klok.kot.R;
 
 /**
@@ -39,10 +40,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     @Override
     public void onBindViewHolder(final OrdersViewHolder holder, int position) {
 
+        final int kotId;
+        if (AppKOT.onStartKot.size() > 0) {
+            kotId = result.get(1).get(position).getKotId();
+        } else {
+            kotId = result.get(0).get(position).getKotId();
+        }
+
         holder.tvTable.setText(result.get(0).get(position).getTableName());
         holder.tvOrderNo.setText("Order #" + result.get(0).get(position).getOrderNo());
         holder.tvCovers.setText("" + result.get(0).get(position).getCovers());
-        holder.tvKot.setText("" + result.get(1).get(position).getKotId());
+        holder.tvKot.setText("" + kotId);
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override

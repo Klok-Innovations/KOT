@@ -11,11 +11,17 @@ public class ShoppingCartPOJO {
     double price;
     int qty;
 
-    public static int kotId = 1;
-    public final int count;
+    public static int kotId;
+    int count;
 
     ShoppingCartPOJO() {
-        count = kotId;
+
+        if (kotId != 0) {
+            kotId++;
+            count = kotId;
+        } else {
+            count = kotId;
+        }
     }
 
     public void setKotId(int count) {
@@ -23,7 +29,7 @@ public class ShoppingCartPOJO {
     }
 
     public int getKotId() {
-        return count;
+        return kotId;
     }
 
     public String getName() {

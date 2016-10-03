@@ -11,17 +11,31 @@ public class NewOrderPOJO {
     private final int count;
     String tableName, floorName;
     int covers;
+    public static int kotId = 0;
+    public final int count1;
 
     NewOrderPOJO() {
         count = orderNo++;
+        count1 = kotId;
     }
 
+    public int getCount1() {
+        return count1;
+    }
     public int getOrderNo() {
         return count;
     }
 
     public void setOrderNo(int count) {
         orderNo = count;
+    }
+
+    public void setKotId(int count1) {
+        kotId = count1;
+    }
+
+    public int getKotId() {
+        return count1;
     }
 
     public int getCovers() {

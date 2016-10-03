@@ -1,5 +1,6 @@
 package online.klok.kot.shopping_cart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,10 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import online.klok.kot.R;
+import online.klok.kot.orders.OrdersActivity;
 
 public class CartActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
+    //    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -70,5 +72,12 @@ public class CartActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, OrdersActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

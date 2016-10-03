@@ -22,10 +22,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import online.klok.kot.AppKOT;
-import online.klok.kot.NewOrderPOJO;
 import online.klok.kot.R;
 import online.klok.kot.orders.OrdersActivity;
-import online.klok.kot.orders.OrdersPOJO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -140,17 +138,36 @@ public class CartFragment extends Fragment implements ShoppingCartAdapter.OnShop
 
                 ArrayList<ShoppingCartPOJO> onStartKot = AppKOT.onStartKot;
 
-                ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
-                shoppingCartPOJO.setType(btnType.getText().toString());
-                shoppingCartPOJO.setKitchenNote(etKitchenNote.getText().toString());
-                shoppingCartPOJO.setKotId(shoppingCartPOJO.count);
+                if (AppKOT.onStartKot.size() < 1) {
 
-                onStartKot.add(shoppingCartPOJO);
+                    ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
+                    shoppingCartPOJO.setType(btnType.getText().toString());
+                    shoppingCartPOJO.setKitchenNote(etKitchenNote.getText().toString());
+                    for (int i = 0; i < AppKOT.newOrderList.size(); i++) {
 
-                Log.e(LOG_TAG, "KotID :" + shoppingCartPOJO.getKotId());
+                        shoppingCartPOJO.setKotId(AppKOT.newOrderList.get(i).getKotId() + 1);
+                        Log.e(LOG_TAG, "KotID(newOrderList) :" + shoppingCartPOJO.getKotId());
+                    }
+                    onStartKot.add(shoppingCartPOJO);
+
+
+                } else {
+
+                    ShoppingCartPOJO shoppingCartPOJO = new ShoppingCartPOJO();
+                    shoppingCartPOJO.setType(btnType.getText().toString());
+                    shoppingCartPOJO.setKitchenNote(etKitchenNote.getText().toString());
+                    for (int i = 0; i < AppKOT.onStartKot.size(); i++) {
+                        shoppingCartPOJO.setKotId(AppKOT.onStartKot.get(i).getKotId());
+                        Log.e(LOG_TAG, "KotID(onStartKot) :" + shoppingCartPOJO.getKotId());
+
+                    }
+
+                    onStartKot.add(shoppingCartPOJO);
+
+                }
+
 
                 AppKOT.onStartKot = onStartKot;
-
 
 
                 Intent intent = new Intent(getActivity(), OrdersActivity.class);

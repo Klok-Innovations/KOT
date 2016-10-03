@@ -8,22 +8,14 @@ public class OrdersPOJO {
     public static final String LOG_TAG = "OrdersPOJO";
 
     String name, tableName, floorName;
-    int orderNo, covers;
-
-
-    public static int kotId = 1;
-    public final int count;
-
-    OrdersPOJO() {
-        count = kotId;
-    }
-
-    public void setKotId(int count) {
-        kotId = count;
-    }
+    int orderNo, covers, kotId;
 
     public int getKotId() {
-        return count;
+        return kotId;
+    }
+
+    public void setKotId(int kotId) {
+        this.kotId = kotId;
     }
 
     public String getName() {

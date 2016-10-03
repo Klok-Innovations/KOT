@@ -105,8 +105,15 @@ public class NewOrderActivity extends AppCompatActivity {
                 newOrderPOJO.setCovers(Integer.parseInt(etCovers.getText().toString()));
                 newOrderPOJO.setFloorName(btnFloor.getText().toString());
                 newOrderPOJO.setTableName(btnTable.getText().toString());
+//                newOrderPOJO.setKotId(newOrderPOJO.count1);
 
+                for (int i = 0; i < AppKOT.newOrderList.size(); i++) {
+                    newOrderPOJO.setKotId(newOrderPOJO.count1);
+                }
                 newOrderList.add(newOrderPOJO);
+
+
+                Log.e(LOG_TAG, "AppKOT.newOrderList.get(i).getCount1()" + newOrderPOJO.count1);
                 Log.e(LOG_TAG, "OrderNo :" + newOrderPOJO.getOrderNo());
 
                 AppKOT.newOrderList = newOrderList;
